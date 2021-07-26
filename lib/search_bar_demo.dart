@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:searchbar_demo/testpage.dart';
+import 'package:searchbar_demo/testpage2.dart';
 
 const searchList = [
   '001_瓶子1',
@@ -65,17 +67,22 @@ class SearchBarDelegate extends SearchDelegate<String> {
   //搜到到内容后的展现
   @override
   Widget buildResults(BuildContext context) {
-    return Container(
-      width: 100.0,
-      height: 100.0,
-      child: Card(
-        color: Colors.redAccent,
-        child: Center(
-          child: Text(query),
-        ),
+    return Container();
+  }
 
-      ),
-    );
+  @override
+  void showResults(BuildContext context) {
+    switch (query) {
+      case "001_瓶子1":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Test2(),
+          ),
+        );
+        break;
+    }
+    super.showResults(context);
   }
 
   //设置推荐
@@ -101,37 +108,48 @@ class SearchBarDelegate extends SearchDelegate<String> {
         ),
         onTap: () {
           query = suggestionsList[index];
+          // query =  suggestionsList[index].toString();
+          showResults(context);
           close(context, query);
           print(query);
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Test(
-                title: query,
-                key: UniqueKey(),
-              ),
-            ),
-          );
+          switch (query) {
+            case "001_瓶子1":
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Test2(),
+                ),
+              );
+              break;
+            case "002_瓶子2":
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Test(),
+                ),
+              );
+              break;
+          }
         },
       ),
     );
   }
 }
 
-class Test extends StatelessWidget {
-  Test({required Key key, required this.title}) : super(key: key);
-  String title = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-    );
-  }
-}
+// class Test extends StatelessWidget {
+//   Test({required Key key, required this.title}) : super(key: key);
+//   String title = "";
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(title),
+//       ),
+//     );
+//   }
+// }
 
 class PlasticCap {
   final int id;
@@ -139,7 +157,6 @@ class PlasticCap {
   final String type;
 
   PlasticCap({required this.id, required this.model, required this.type});
-
 }
 
 // 這個posts 是一個List的數據類型
